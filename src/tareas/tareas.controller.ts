@@ -1,24 +1,46 @@
-import { Controller, Get, Post, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body, Put } from '@nestjs/common';
+import { TareasService } from './tareas.service';
+import { Tarea } from './tareas.entity';
 
 @Controller({ })
 export class tareasController{
 
-@Get('tareas')
-getTareas(){
-    const tareas_array = [
-        {
-            id:1,
-            descripcion:'Tarea1',
-            estatus:1
-        },
-        {
-            id:2,
-            descripcion:'Tarea2',
-            estatus:0
+    constructor(private TareasService:TareasService){}
+    @Get('tareas')
+    getTareas():Promise<Tarea[]>{
+        let tareas = this.TareasService.findAll()
+    return tareas
+    }
+    @Get('tarea/:id_tarea')
+    async findOne(@Param('id_tarea') id_tarea: number): Promise<Tarea | null> {
+        let respuesta = await this.TareasService.findOne(id_tarea);
+        if(!respuesta){
+            return null
         }
-    ]
-    return tareas_array
-}
+        return respuesta
+    }
+    @Post('tarea')
+    async createTarea(@Body() body:Tarea):Promise<Tarea>{
+        return this.TareasService.createTarea(body)
+    }
+
+    @Put('tarea/:id')
+    async updateTarea(@Param('id_tarea') id_tarea: number, @Body() body: Tarea): Promise<Tarea | null> {
+        let respuesta = await this.TareasService.updateTarea(id_tarea, body);
+        if(!respuesta){
+            return null
+        }
+        return respuesta
+    }
+    @Delete('tarea/:id')
+    async deleteTarea(@Param('id_tarea') id_tarea: number): Promise<Tarea | null> {
+        let respuesta = await this.TareasService.deleteTarea(id_tarea);
+        if(!respuesta){
+            return null
+        }
+        return respuesta
+    }
+
 
 
 }
