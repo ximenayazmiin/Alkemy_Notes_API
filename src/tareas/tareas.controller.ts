@@ -24,7 +24,7 @@ export class tareasController{
         return this.TareasService.createTarea(body)
     }
 
-    @Put('tarea/:id')
+    @Put('tarea/:id_tarea')
     async updateTarea(@Param('id_tarea') id_tarea: number, @Body() body: Tarea): Promise<Tarea | null> {
         let respuesta = await this.TareasService.updateTarea(id_tarea, body);
         if(!respuesta){
@@ -32,7 +32,7 @@ export class tareasController{
         }
         return respuesta
     }
-    @Delete('tarea/:id')
+    @Delete('tarea/:id_tarea')
     async deleteTarea(@Param('id_tarea') id_tarea: number): Promise<Tarea | null> {
         let respuesta = await this.TareasService.deleteTarea(id_tarea);
         if(!respuesta){
